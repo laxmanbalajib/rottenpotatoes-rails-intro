@@ -14,12 +14,16 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     @all_ratings = Movie.movie_ratings
     
-    sortBy = params[:sort_by]
-    @ratingsSelected = @all_ratings
+    unless session[:ratings]
+      session[:ratings] = Hash[@all_ratings.map{|x| [x, 1]}]
+    end
     
     if params[:ratings]
-      @ratingsSelected = params[:ratings].keys
+      session[:ratings] = params[:ratings]
     end
+    
+    sortBy = params[:sort_by]
+    @ratingsSelected = session[:ratings].keys
     
     @movies = @movies.order(sortBy)
     @movies = @movies.where(rating: @ratingsSelected)
