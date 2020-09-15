@@ -14,12 +14,12 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     @all_ratings = Movie.movie_ratings
     
-    unless session[:ratings]
-      session[:ratings] = Hash[@all_ratings.map{|x| [x, 1]}]
+    if params[:ratings] != session[:ratings]
+      session[:ratings] = params[:ratings]
     end
     
-    if params[:ratings]
-      session[:ratings] = params[:ratings]
+    unless session[:ratings]
+      session[:ratings] = Hash[@all_ratings.map{|x| [x, 1]}]
     end
     
     sortBy = params[:sort_by]
