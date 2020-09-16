@@ -25,18 +25,18 @@ class MoviesController < ApplicationController
     end
     
     unless session[:ratings]
-      session[:ratings] = Hash[@all_ratings.map{|x| [x, 1]}]
+      session[:ratings] = Hash[@all_ratings.map{|x| [x, x]}]
     end
     
-    sortBy = session[:sort_by]
+    @sortBy = session[:sort_by]
     @ratingsSelected = session[:ratings].keys
     
-    @movies = @movies.order(sortBy)
+    @movies = @movies.order(@sortBy)
     @movies = @movies.where(rating: @ratingsSelected)
     
     if do_redirect == 1
       flash.keep
-      redirect_to movies_path(order: session[:sort_by])
+      #redirect_to movies_path(ratings: session[:ratings])
     end
   end
 
