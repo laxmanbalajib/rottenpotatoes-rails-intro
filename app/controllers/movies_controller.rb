@@ -16,12 +16,10 @@ class MoviesController < ApplicationController
     
     if params[:ratings]
       session[:ratings] = params[:ratings]
-      do_redirect = 1
     end
     
     if params[:sort_by]
       session[:sort_by] = params[:sort_by]
-      do_redirect = 1
     end
     
     unless session[:ratings]
@@ -33,11 +31,6 @@ class MoviesController < ApplicationController
     
     @movies = @movies.order(@sortBy)
     @movies = @movies.where(rating: @ratingsSelected)
-    
-    if do_redirect == 1
-      flash.keep
-      #redirect_to movies_path(ratings: session[:ratings])
-    end
   end
 
   def new
